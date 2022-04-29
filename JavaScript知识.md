@@ -173,4 +173,69 @@ JS Array对象用于定义数组
   - Attribute：属性对象
   - Text：文本对象
   - Comment：注释对象
+- JS通过DOM，就能够对HTML进行操作了
+  - 改变HTML元素的内容
+  - 改变HTML元素的样式（CSS)
+  - 对HTML DOM事件作出反应
+  - 添加和删除HTML元素
+- 获取Element对象
+  - Element：元素对象
+  - 获取：使用Document对象的方法来获取
+    1. getElementById：根据id属性值获取，返回一个Element对象
+    2. getElementsByTagName：根据标签名称获取，返回Element对象数组
+    3. getElementsByName：根据name属性值获取，返回Element对象数组
+    4. getElementsByClassName：根据class属性值获取，返回Element对象数组
+- 常见HTML Element对象的使用
 # 事件监听
+- 事件：HTML事件是发生在HTML元素上的“事情”。比如：
+  - 按钮被点击
+  - 鼠标移动到元素之上
+  - 按下键盘按键
+- 事件监听：JS可以在事件被侦测到时执行代码
+  - 事件绑定
+    - 两种方式
+      - 方式一：通过HTML标签中的事件属性进行绑定
+        ```javascript
+        <input type="button" onclick="on()">
+        function on(){
+          alert("我被点了");
+        }
+        ```
+      - 方式二：通过DOM元素属性绑定
+        ```javascript
+        <input type="button" id="btn">
+        document.getElementById("btn").onclick = function(){
+          alert("我被点了");
+        }
+        ```
+  - 常见事件
+    - onsubmit事件：当表单提交时触发该事件。onsubmit=function(){//返回true则表单会被提交，返回false则表单不提交}
+    - onclick：鼠标单击事件
+    - onblur：元素失去焦点
+    - onfocus：元素获得焦点
+    - onload：某个页面或图像被完成加载
+    - onkeydown：某个键盘的键被按下
+    - onmouseover：鼠标被移到某元素之上
+    - onmouseout：鼠标从某元素移开
+  - Event代表事件对象
+---
+# 正则表达式
+- 概念：正则表达式定义了字符串组成的规则
+- 定义：
+  1. 直接量：注意不要加括号。`var reg = /^\w{6,12}$/;`
+  2. 创建RegExp对象。`var reg = new RegExp("^\\w{6,12}$");`
+- 方法：test(str):判断指定字符串是否符合规则，返回true或者false
+- 语法：
+  - ^：表示开始
+  - $：标识结束
+  - []：代表某个范围内的单个字符，比如：[0-9]单个数字字符
+  - .：代表任意单个字符，除了换行和行结束符
+  - \w：代表单词字符：字符、数字、下划线、相当于[A-Za-z0-9_]
+  - \d：代表数字字符，相当于[0-9]
+  - 量词：
+    - +：至少一个
+    - *：零个或多个
+    - ?：零个或一个
+    - {x}：x个
+    - {m,}：至少m个
+    - {m,n}：至少m个，最多n个
