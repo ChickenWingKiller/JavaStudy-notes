@@ -70,3 +70,91 @@ JavaWeb：是用Java技术来解决相关web互联网领域的技术栈
   - Tomcat Maven插件
     1. pom.xml添加Tomcat插件
     2. 使用Maven Helper插件快速启动项目，选中项目，右键 -> Run Maven -> tomcat7:run
+---
+# Servlet
+#### Servlet是Java提供的一门动态web资源开发技术
+#### Servlet是JavaEE规范之一，其实就是一个接口，将来我们需要定义Servlet类实现Servlet接口，并由web服务器运行Servlet
+- 快速入门
+  1. 创建web项目，导入Servlet依赖坐标
+  ```xml
+  <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.1.0</version>
+    <scope>provided</scope>
+  </dependency>
+  ```
+  2. 创建：定义一个类，实现Servlet接口，并重写接口中所有方法，并在service方法中输出一句话
+  ```java
+  public class ServletDemo implements Servlet(){
+    public void service(){}
+  }
+  ```
+  3. 配置：在类上使用@WebServlet注解，配置该Servlet的访问路径
+  ```java
+  @WebServlet("/demo")
+  public class ServletDemo implements Servlet(){
+  ```
+  4. 访问：启动Tomcat，浏览器输入URL访问该Servlet
+  ```url
+  http://localhost:8080/web-demo/demo1
+  ```
+- Servlet执行流程
+  - Servlet由谁创建？Servlet方法由谁调用？
+Servlet由Web服务器创建，Servlet方法由Web服务器调用。
+  - 服务器怎么知道Servlet中一定有service方法？
+因为我们自定义的Servlet，必须实现Servlet接口并复写其方法，而Servlet接口中有serv方法。
+- Servlet生命周期
+  - 对象的生命周期指一个对象从被创建到被销毁的整个过程
+  - Servlet运行在Servlet容器（web服务器）中，其生命周期由容器来管理，分为四个阶段：
+    1. 加载和实例化
+    2. 初始化，init()
+    3. 请求处理，service()
+    4. 服务终止，destroy()
+- Servlet方法介绍
+  - 初始化方法，在Servlet被创建时执行，只执行一次`void init(ServletConfig config)`
+  - 提供服务方法，每次Servlet被访问，都会调用该方法`void service(ServletRequest req, ServletResponse res)`
+  - 销毁方法，当Servlet被销毁时，调用该方法。在内存释放或服务器关闭时销毁Servlet`void destroy()`
+  - 获取ServletConfig对象`ServletConfig getServletConfig()`
+  - 获取Servlet信息`String getServletInfo()`
+- Servlet体系结构
+  我们将来开发B/S架构的web项目，都是针对HTTP协议，所以我们自定义Servlet，会继承HttpServlet
+  - 继承HttpServlet类，复写doGet(get请求方式处理逻辑)和doPost(post请求方式处理逻辑)方法
+- Servlet urlPattern配置
+  - Servlet要想被访问，必须配置其访问路径（urlPattern）
+  1. 一个Servlet，可以配置多个urlPattern
+      ```java
+      @WebServlet(urlPatterns = {"/demo1","/demo2"})
+      ```
+  2. urlPattern配置规则
+     1. 精确匹配
+      配置路径：`@WebServlet("/user/select")`
+      访问路径：`localhost:8080/web-demo/user/select`
+     2. 目录匹配
+      配置路径：`@WebServlet("/user/*")`
+      访问路径：`localhost:8080/web-demo/user/aaa`、`localhost:8080/web-demo/user/bbb`
+     3. 扩展名匹配
+      配置路径：`@WebServlet("*.do")`
+      访问路径：`localhost:8080/web-demo/aaa.do`、`localhost:8080/web-demo/bbb.do`
+     4. 任意匹配 
+      配置路径：`@WebServlet("/")`、`@WebServlet("/*")`
+      访问路径：`localhost:8080/web-demo/hehe`、`localhost:8080/web-demo/haha`
+      - / 和 */ 区别：
+        - 当我们的项目中的Servlet配置了"/"，会覆盖掉tomcat中的DefaultServlet，当其他的url-pattern都匹配不上时都会走这个Servlet。无法访问静态资源。
+        - 当我们的项目中配置了"/*",意味着匹配任意访问路径
+      - 优先级：精确路径>目录路径>扩展名路径>/*>/
+- XML配置方式编写Servlet
+  - Servlet从3.0版本后开始支持实用注解配置，3.0版本前只支持XML配置文件的配置方式
+  - 步骤：
+    1. 编写Servlet类
+    2. 在web.xml中配置该Servlet
+    ```xml
+    <servlet>
+      <servlet-name>demo5</servlet-name>
+      <servlet-class>com.itheima.web.servlet.ServletDemo5</servlet-class>
+    </servlet>
+    <servlet-mapping>
+      <servlet-name>demo5</servlet-name>
+      <url-pattern>demo5<url-pattern>
+    </servlet-mapping>
+    ```
