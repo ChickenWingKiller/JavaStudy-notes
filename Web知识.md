@@ -178,4 +178,22 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
          - ServletInputStream getInputStream():获取字节输入流
          - BufferedReader getReader():获取字符输入流 
   - Request请求转发：
+  - 通用方式获取请求参数：提供一种统一获取请求参数的方式，从而统一doGet和doPost方法内的代码。
+    - `Map<String, String[]> getParameterMap(): 获取所有参数Map集合`
+    - `String[] getParameterValues(String name)：根据名称获取参数值(数组)`
+    - `String getParameter(String name): 根据名称获取参数值(单个值)`
+    - 使用通用方式获取请求参数后，屏蔽了GET和POST的请求方式代码的不同，则代码可以定义为如下格式：
+      ```java
+      doGet(){
+
+      }
+      doPost(){
+        this.doGet
+      }
+      ```
+    - 可以使用Servlet模板创建Servlet更高效
+  - 请求参数中中文乱码处理
+    - Post:设置输入流的编码
+      request.setCharacterEncoding("UTF-8");
+    - Get:
 - Response：设置相应数据
