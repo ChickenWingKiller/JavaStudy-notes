@@ -224,3 +224,4 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
       `resp.setHeader("location","资源B的路径");`
   - 相应字符数据
   - 相应字节数据
+  - 芜湖
