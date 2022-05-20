@@ -177,7 +177,17 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
       3. 请求体：`username=superbaby&password=123`
          - ServletInputStream getInputStream():获取字节输入流
          - BufferedReader getReader():获取字符输入流 
-  - Request请求转发：
+  - Request请求转发：forward,一种在服务器内部的资源跳转方式
+    - 实现方式：
+      - `req.getRequestDispatcher("资源B路径").forward(req,resp);`
+    - 请求转发资源间共享数据：使用Request对象
+      - `void setAttribute(String name, Object o)`：存储数据到request域中
+      - `Object getAttribute(String name)`：根据key，获取值
+      - `void removeAttribute(String name)`：根据key删除该键值对
+    - 请求转发特点：
+      - 浏览器地址栏路径不发生变化
+      - 只能转发到当前服务器的内部资源
+      - 一次请求，可以在转发的资源间使用request共享数据
   - 通用方式获取请求参数：提供一种统一获取请求参数的方式，从而统一doGet和doPost方法内的代码。
     - `Map<String, String[]> getParameterMap(): 获取所有参数Map集合`
     - `String[] getParameterValues(String name)：根据名称获取参数值(数组)`
@@ -195,5 +205,22 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
   - 请求参数中中文乱码处理
     - Post:设置输入流的编码
       request.setCharacterEncoding("UTF-8");
-    - Get:
-- Response：设置相应数据
+    - Get:先编码，再解码
+      `new String(username.getBytes("ISO-8859-1"),"UTF-8");`
+- Response：设置响应数据
+  - 设置响应数据功能介绍
+    - 响应数据分为3部分：
+      1. 相应行：`HTTP/1.1 200 OK`
+         - `void setStatus(int sc)`：设置相应状态码
+      2. 响应头：`Content-Type:text/html`
+         - `void setHeader(String name, String value)`：设置相应头键值对
+      3. 响应体：`<html><head><head><body></body></html>`
+         - `PrintWriter getWriter()`：获取字符输出流
+         - `ServletOuputStream getOutputStream()`：获取字节输出流
+  - 完成重定向
+    - 重定向（Redirect）：一种资源跳转方式。（我处理不了，找别人处理，**状态码：302**，那个人的位置是xxx，**响应头location：xxx**）
+    - 实现方式：
+      `resp.setStatus(302);`
+      `resp.setHeader("location","资源B的路径");`
+  - 相应字符数据
+  - 相应字节数据
