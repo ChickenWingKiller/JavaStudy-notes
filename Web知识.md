@@ -221,7 +221,30 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
     - 重定向（Redirect）：一种资源跳转方式。（我处理不了，找别人处理，**状态码：302**，那个人的位置是xxx，**响应头location：xxx**）
     - 实现方式：
       `resp.setStatus(302);`
-      `resp.setHeader("location","资源B的路径");`
-  - 相应字符数据
-  - 相应字节数据
-  - 芜湖
+      `resp.setHeader("location","资源B的路径");`（资源B的路径需要加虚拟目录）
+      简化方式完成重定向：`resp.sendRedirect("资源B的路径");`
+    - 重定向特点
+      - 浏览器地址栏路径发生变化
+      - 可以重定向到任意位置的资源（服务器内部、外部均可）
+      - 两次请求，不能在多个资源使用request共享数据
+    - 路径问题
+      - 明确路径谁使用：
+        - 浏览器使用：需要加虚拟目录（项目访问路径）
+        - 服务器使用：不需要加虚拟目录
+        - 动态获取虚拟目录：`String contextPath = request.getContextPath();` (contextPath + "/resp2")
+  - 响应字符数据
+    - 使用：
+      1. 通过Response对象获取字符输出流
+          `PrintWriter writer = resp.getWriter();`
+          ```java
+          //1.获取字符输出流
+          PrintWriter writer = response.getWriter();
+          //2.设置响应头信息，content-type
+          response.setHeader("content-type", "text/html");
+          writer.write("aaa");
+          writer.write("<h1>aaa</h1>");
+          ```
+          - 
+      2. 写数据
+          `writer.write("aaa");`
+  - 响应字节数据
