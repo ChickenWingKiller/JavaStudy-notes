@@ -237,6 +237,7 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
       1. 通过Response对象获取字符输出流
           `PrintWriter writer = resp.getWriter();`
           ```java
+          response.setContentType("text/html;charset=utf-8"); //设置response的响应格式和字符集
           //1.获取字符输出流
           PrintWriter writer = response.getWriter();
           //2.设置响应头信息，content-type
@@ -244,7 +245,41 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
           writer.write("aaa");
           writer.write("<h1>aaa</h1>");
           ```
-          - 
       2. 写数据
           `writer.write("aaa");`
+    - 注意：
+      - 该流不需要关闭，随着相应结束，response对象销毁，由服务器关闭
+      - 中文数据乱码：原因通过Response获取的字符输出流默认编码：ISO-8859-1
+        `resp.setContentType("text/html;charset=utf-8");`
   - 响应字节数据
+    - 使用：
+      1. 通过Response对象获取字节输出流
+        `ServletOutputStream outputStream = resp.getOutputStream();`
+        ```java
+        //1.读取数据
+        FileInputStream fis = new FileInputStream("d://a.jpg");
+        //2.获取response字节输出流
+        ServletOutputStream os = response.getOutputStream();
+        //3.完成流的copy
+        byte[] buff = new byte[1024];
+        int len = 0;
+        while ((len = fis.read(buff)) != -1) {
+          os.write(buff, 0, len);
+        }
+        fis.close();
+        ```
+        这个方法很麻烦，经过引用commons-io的依赖后，第三步可以替换为：
+        `IOUtils.copy(fis,os);`
+      2. 写数据
+        `outputStream.write(字节数据);`
+    - IOUtils工具类使用
+      1. 导入坐标
+        ```xml
+        <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>2.6</version>
+        </dependency>
+        ```
+      2. 使用
+        `IOUtils.copy(输入流, 输出流);`
