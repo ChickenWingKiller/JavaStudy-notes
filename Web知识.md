@@ -283,3 +283,5 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
         ```
       2. 使用
         `IOUtils.copy(输入流, 输出流);`
+- 案例：用户登录
+- 案例：用户注册

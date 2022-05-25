@@ -24,7 +24,7 @@
 * 解决原生方式中的硬编码
 * 简化后期执行SQL
 ## 使用Mapper处理方式完成入门案例
-1. 定义与SQL映射文件同名的Mapper接口，并且将Mapper接口和SQL映射文件放置在同一目录下。
+1. 定义与SQL映射文件同名的Mapper接口，并且将Mapper接口和SQL映射文件放置在同一目录下。（在resource下创建包的结构，要用‘/’作为分隔符）
 2. 设置SQL映射文件的namespace属性为Mapper接口全限定名。
 3. 在Mapper接口中定义方法，方法名就是SQL映射文件中sql语句的id，并保持参数类型和返回值类型一致。
 4. 编码
@@ -47,8 +47,12 @@ MyBatis核心配置文件的顶层结构如下：
           - dataSource(数据源)
     - databaseIdProvider(数据库厂商标识)
     - mappers(映射器)
-
-类型别名(typeAliases)
+- 类型别名(typeAliases)
+```xml
+<typeAliases>
+    <package name="com.itheima.pojo"/>
+</typeAliases>
+```
 
 **细节：配置各个标签时，需要遵循前后顺序。**
 
