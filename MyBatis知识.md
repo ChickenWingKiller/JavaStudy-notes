@@ -65,11 +65,21 @@ MyBatis核心配置文件的顶层结构如下：
        2. 查看详情 `Brand selectById(int id);`
        3. 条件查询
             - 多条件查询
+              - 编写接口方法：Mapper接口
+                - 参数：所有查询条件，可使用模糊查询
+                - 结果：List<Brand>
+              - 编写SQL语句：SQL映射文件
+              - 执行方法，测试
             - 多条件查询-动态条件查询
-SQL语句会随着用户的输入或外部条件的变化而变化，称为动态SQL
+                SQL语句会随着用户的输入或外部条件的变化而变化，称为动态SQL
+              - MyBatis对动态SQL有很强大的支撑：
+                - if
+                - choose（when，otherwise）
+                - trim（where，set）
+                - foreach
             - 单条件-动态条件查询
-            从多个条件中选一个。choose(when,otherwise):选择，类似于switch语句
-    2. 添加
+                从多个条件中选一个。choose(when,otherwise):选择，类似于switch语句
+    1. 添加
         - 编写接口方法：Mapper接口 `void add(Brand brand);`
             - 参数：除了id之外的所有数据
             - 结果：void
@@ -81,14 +91,20 @@ SQL语句会随着用户的输入或外部条件的变化而变化，称为动�
         - 主键返回
         在数据添加成功后，需要获取插入数据库数据的主键的值
         返回添加数据的主键`<insert useGeneratedKeys="true" keyProperty="id">`
-    3. 修改
+    2. 修改
        1. 修改全部字段
        2. 修改动态字段（要修改哪个字段，是不固定的）
             - 用`<if></if>`标签和`<set></set>`标签
-    4. 删除
+    3. 删除
        1. 删除一个
        2. 批量删除
 ## Mybatis参数传递
+如果传递多个参数，在接口中不用@Param注解
+```sql
+where
+    username = #{arg0} 或 #{param1}
+and password = #{arg1} 或 #{param2}
+```
 建议：将来都使用@Param注解来修改Map集合中默认的键名（arg0），并使用修改后的名称来获取值，这样可读性更高。
 # 注解完成增删改查
 ```java

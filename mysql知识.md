@@ -69,7 +69,7 @@ select 字段列表 from 表名 where 条件列表;
 不等于号： ！=,<>
 null值的比较不能使用 =,!=。需要使用 is,is not。
 age=1 or age=2 or age=3, in (1,2,3)
-like占位符：模糊查询，_单个任意字符，%多个任意字符。 (查询姓'马'的学员信息：select * from stu where name like '马%';)
+like占位符：模糊查询，_单个任意字符，%多个任意字符。 (查询姓'马'的学员信息：select * from stu where name like '马%')
 
 ## 3.排序查询
 select 字段列表 from 表名 order by 排序字段名1 排序方式1,排序字段名2 排序方式2 ...;
