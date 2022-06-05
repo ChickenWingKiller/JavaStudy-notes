@@ -284,4 +284,22 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
       2. 使用
         `IOUtils.copy(输入流, 输出流);`
 - 案例：用户登录
+  - 流程说明
+    1. 用户填写用户名密码，提交到LoginServlet
+    2. 在LoginServlet中使用MyBatis查询数据库，验证用户名密码是否正确
+    3. 如果正确，响应“登陆成功”，如果错误，响应”登陆失败“
+  - 准备环境：
+    1. 复制资料中的静态页面到项目的webapp目录下
+    2. 创建数据库，创建表，创建User实体类
+    3. 导入MyBatis坐标，MySQL驱动坐标
+    4. 创建mybatis-config.xml核心配置文件，UserMapper.xml映射文件，UserMapper接口
 - 案例：用户注册
+  - 流程说明：
+    1. 用户填写用户名、密码等信息，点击注册按钮，提交到RegisterServlet
+    2. 在RegisterServlet中使用MyBatis保存数据
+    3. 保存前，需要判断用户名是否已经存在：根据用户名查询数据库
+- 代码优化
+  - 创建SqlSessionFactory代码优化
+  - 问题：
+    - 代码重复。----> 抽取到一个工具类
+    - 浪费资源。SqlSessionFactory工厂应该只创建一次，不要重复创建。 ----> 静态代码块
