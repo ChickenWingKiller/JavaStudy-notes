@@ -48,3 +48,40 @@ el表达式获取数据，会依次从这4个域中寻找，直到找到为止
   - 业务逻辑层：对业务逻辑进行封装，组合数据访问层层中基本功能，形成复杂的业务逻辑功能。(com.service)
   - 表现层：接受请求，封装数据，调用业务逻辑层，响应数据。(com.dap/mapper)
 ## 案例
+- 准备环境
+  - 创建新的模块brand_demo，引入坐标
+  - 创建三层架构的包结构
+  - 数据库表tb_brand
+  - 实体类Brand
+  - MyBatis基础环境
+    - Mybatis-config.xml
+    - BrandMapper.xml
+    - BrandMapper接口
+- 查询所有
+  - DAO层
+    - BrandMapper，`List<Brand> selectAll()`
+  - Service层
+    - BrandService，selectAll调用brandMapper中的方法
+  - Web层
+    - SelectAllServlet：1.调用service查询 2.将数据存入request 3.转发到brand.jsp
+- 添加
+  - DAO层
+    - BrandMapper，`void add(brand)`
+  - Service层
+    - BrandService，add调用brandMapper中的方法
+  - Web层
+    - SelectAllServlet：1.接收数据，封装Brand对象 2.调用service完成添加 3.转发到查询所有Servlet
+- 修改-回显数据
+  - DAO层
+    - BrandMapper，`Brand selectById(id)`
+  - Service层
+    - BrandService，selectById调用brandMapper中的方法
+  - Web层
+    - SelectByIdServlet：1.接收id 2.调用service查询Brand 3.存储request 4.转发修改页面
+- 修改-修改数据
+  - DAO层
+    - BrandMapper，`void update(brand)`
+  - Service层
+    - BrandService，add调用brandMapper中的方法
+  - Web层
+    - UpdateServlet：1.接收数据，封装Brand对象 2.调用service修改 3.转发到查询所有Servlet
