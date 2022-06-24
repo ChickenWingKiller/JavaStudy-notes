@@ -303,3 +303,44 @@ Servlet由Web服务器创建，Servlet方法由Web服务器调用。
   - 问题：
     - 代码重复。----> 抽取到一个工具类
     - 浪费资源。SqlSessionFactory工厂应该只创建一次，不要重复创建。 ----> 静态代码块
+  
+---
+# Filter
+#### 概念：Filter表示过滤器，是JavaWeb三大组件（Servlet、Filter、Listener）之一。
+#### 过滤器可以把对资源的请求<font color=red>拦截</font>下来，从而实现一些特殊的功能。
+#### 过滤器一般完成一些<font color=red>通用</font>的操作，比如：权限控制，统一编码处理，敏感字符处理等等。。。
+- Filtrt快速入门
+  1. 定义类，实现Filter接口，并重写其所有方法
+  2. 配置Filter拦截资源的路径：在类上定义@WebFilter注解
+  3. 在doFilter方法中输出一句话，并放行 `chain.doFilter(request,response);`
+- Filter执行流程
+  - 放行后访问对应资源，资源访问完成后，还会回到Filter中。
+  - 如果回到Filter中，直接执行放行后的逻辑
+  - 执行放行前逻辑 -> 放行-> 访问资源 -> 执行放行后逻辑
+  - 放行前，对request数据进行处理。放行后，对response数据进行处理。
+- Filter使用细节
+  - Filter拦截路径配置(@WebFilter("/*"))
+    - 拦截具体的资源：/index.jsp: 只有访问index.jsp时才会被拦截
+    - 目录拦截：/user/*: 访问/user下的所有资源，都会被拦截
+    - 后缀名拦截：*.jsp: 访问后缀名为jsp的资源，都会被拦截
+    - 拦截所有：/*: 访问所有资源，都会被拦截
+  - 过滤器链 （多个过滤器一起起作用）
+    - 一个Web应用，可以配置多个过滤器，这多个过滤器成为过滤器链
+    - 注解配置的Filter，优先级按照过滤器类名（字符串）的自然排序
+- 案例-登录验证
+  - 需求：访问服务器资源时，需要先进行登录验证，如果没有登录，则自动跳转到登陆页面
+  - 判断访问的是否是登录相关路径
+    - 是：放行
+    - 不是：进行登录验证
+  - 判断用户是否登录：session中是否有user对象
+    - 登录：直接放行
+    - 未登录：跳转到登陆页面，并给出提示信息
+
+---
+# Listener
+- 概念：Listener表示监听器，是JavaWeb三大组件之一。
+- 监听器可以监听，就是在application，session，request三个对象创建，销毁或者往其中添加修改删除属性时<font color=red>自动</font>执行代码的功能组件。
+- Listener分类：JavaWeb中提供了8个监听器。
+- ServletContextListener使用
+  1. 定义类，实现ServletContextListener接口
+  2. 在类上添加@WebListener
